@@ -35,4 +35,3 @@ If successful, your efforts may help clinicians save lives. Earlier detection of
 ## Team Data
 - Stanley Hua
 - Whitney Chiu
-
