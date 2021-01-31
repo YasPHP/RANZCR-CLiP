@@ -117,18 +117,18 @@ x = Flatten()(x)
 ## BUILDING THE MODEL (Keras’s Function API )                                      
 
 # CONV LAYER 1
-x = Conv2D(32, (7, 7),  activation='relu', padding = 'same', name='conv1')(inp)  # NOTE: very 1st layer input
+x = Conv2D(64, (7, 7),  activation='relu', padding = 'same', name='conv1')(inp)  # NOTE: very 1st layer input
 
 # CONV LAYER 2
-x = Conv2D(64, (7, 7), activation='relu',  padding = 'same', name='conv2')(x)
+x = Conv2D(128, (5, 5), activation='relu',  padding = 'same', name='conv2')(x)
 x = MaxPooling2D(pool_size = (2, 2))(x)
 x = Dropout(0.25)(x)
 
 # CONV LAYER 3
-x = Conv2D(128, (5, 5), activation='relu',  padding = 'same', name='conv3')(x)
+x = Conv2D(256, (5, 5), activation='relu',  padding = 'same', name='conv3')(x)
 
 # CONV LAYER 4
-x = Conv2D(256, (5, 5), activation='relu',  padding = 'same', name='conv4')(x)
+x = Conv2D(256, (3, 3), activation='relu',  padding = 'same', name='conv4')(x)
 x = MaxPooling2D(pool_size = (2, 2))(x)
 x = Dropout(0.25)(x)
 
