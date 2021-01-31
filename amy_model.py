@@ -234,12 +234,6 @@ x = Flatten()(x)
 
 #CONVOLUTION LAYERS -> would go here
 
-# FINALE
-x = Flatten()(x)
-x = Dense(512)(x)
-x = Activation('relu')(x)
-x = Dropout(0.5)(x)
-
 
 # “binary_crossentropy” as loss function and “sigmoid” as the final layer activation
 output4 = Dense(1, activation = 'sigmoid')(x)
