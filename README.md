@@ -27,8 +27,11 @@ If successful, your efforts may help clinicians save lives. Earlier detection of
 
 
 # Members (Team Proj Cog)
+## Team Model Architecture
 - Yasmeen Hmaidan
-- Maliha Lodi :)
+- Maliha Lodi
+- Arina Mnatsakanyan
+
+## Team Data
 - Stanley Hua
 - Whitney Chiu
-- Arina Mnatsakanyan
