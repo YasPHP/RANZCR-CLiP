@@ -28,7 +28,7 @@ If successful, your efforts may help clinicians save lives. Earlier detection of
 
 # Members (Team Proj Cog)
 - Yasmeen Hmaidan
-- Maliha Lodi
+- Maliha Lodi :)
 - Stanley Hua
 - Whitney Chiu
 - Arina Mnatsakanyan
