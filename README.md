@@ -15,6 +15,9 @@ The gold standard for the confirmation of line and tube positions are chest radi
 
 # Radiology Community
 ![RANZCR LOGO](https://www.internationaldayofradiology.com/app/uploads/2017/08/sponsor-ranzcr.png)
+
+<img src="https://www.internationaldayofradiology.com/app/uploads/2017/08/sponsor-ranzcr.png" width="10">
+
 The Royal Australian and New Zealand College of Radiologists (RANZCR) is a not-for-profit professional organisation for clinical radiologists and radiation oncologists in Australia, New Zealand, and Singapore. The group is one of many medical organisations around the world (including the NHS) that recognizes malpositioned tubes and lines as preventable. RANZCR is helping design safety systems where such errors will be caught.
 
 # Our Approach
