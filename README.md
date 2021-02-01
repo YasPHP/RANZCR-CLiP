@@ -13,10 +13,7 @@ Hospital patients can have catheters and lines inserted during the course of the
 
 The gold standard for the confirmation of line and tube positions are chest radiographs. However, a physician or radiologist must manually check these chest x-rays to verify that the lines and tubes are in the optimal position. Not only does this leave room for human error, but delays are also common as radiologists can be busy reporting other scans. Deep learning algorithms may be able to automatically detect malpositioned catheters and lines. Once alerted, clinicians can reposition or remove them to avoid life-threatening complications.
 
-# Radiology Community
-
-<img src="https://www.internationaldayofradiology.com/app/uploads/2017/08/sponsor-ranzcr.png" width="200">
-
+# Radiology Affiliation
 The Royal Australian and New Zealand College of Radiologists (RANZCR) is a not-for-profit professional organisation for clinical radiologists and radiation oncologists in Australia, New Zealand, and Singapore. The group is one of many medical organisations around the world (including the NHS) that recognizes malpositioned tubes and lines as preventable. RANZCR is helping design safety systems where such errors will be caught.
 
 # Our Approach
@@ -38,4 +35,10 @@ If successful, your efforts may help clinicians save lives. Earlier detection of
 ## Team Data
 - Stanley Hua
 - Whitney Chiu
+
+# Relevant Communities
+
+<img src="https://www.internationaldayofradiology.com/app/uploads/2017/08/sponsor-ranzcr.png" width="200">
+<img src="https://static.wixstatic.com/media/8f6d2f_a3d012b6a8254c5494ee81979ed84e8b~mv2.png/v1/fill/w_202,h_80,al_c,q_85,usm_0.66_1.00_0.01/uoftaishort_i.webpraw=true" width="200">
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Kaggle_logo.png" width="200">
 
