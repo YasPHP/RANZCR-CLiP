@@ -39,6 +39,6 @@ If successful, your efforts may help clinicians save lives. Earlier detection of
 # Relevant Communities
 
 <img align="left" img src="https://www.internationaldayofradiology.com/app/uploads/2017/08/sponsor-ranzcr.png" width="300">
-<img img align="left" src="https://static.wixstatic.com/media/8f6d2f_a3d012b6a8254c5494ee81979ed84e8b~mv2.png/v1/fill/w_202,h_80,al_c,q_85,usm_0.66_1.00_0.01/uoftaishort_i.webpraw=true" width="200">
-<img img align="left" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Kaggle_logo.png" width="200">
+<img img align="center left" src="https://static.wixstatic.com/media/8f6d2f_a3d012b6a8254c5494ee81979ed84e8b~mv2.png/v1/fill/w_202,h_80,al_c,q_85,usm_0.66_1.00_0.01/uoftaishort_i.webpraw=true" width="300">
+<img img align="left" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Kaggle_logo.png" width="300">
 
