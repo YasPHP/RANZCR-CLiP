@@ -9,6 +9,54 @@ base_model.load_weights("../input/keras-pretrained-models/resnet50_weights_tf_di
 base_model.trainable = False
 #-----------------------------------------------------------------------------------------------------
 
+#---------# ETT DF GENERATORS (TRAIN, VALID, TEST [UNIVERSAL/NON-UNIQUE]) #---------#
+
+## DATFRAME FILTER
+ETT_df_train = df_train[["StudyInstanceUID", "ETT - Abnormal", "ETT - Borderline", "ETT - Normal"]]
+ETT_df_test = df_test[["StudyInstanceUID", "ETT - Abnormal", "ETT - Borderline", "ETT - Normal"]]
+# print(ETT_df.head())
+
+# ETT GENERATORS 
+ETT_dftrain_generator=datagen.flow_from_dataframe(
+    dataframe=ETT_df_train[:21000],
+    directory=comp_dir+"train",
+    x_col="StudyInstanceUID",
+    y_col=label_cols,
+    batch_size=batch_size,
+    seed=42,
+    shuffle=True,
+    color_mode="rgb",
+    class_mode="raw",
+    target_size=(image_size,image_size),
+    interpolation="bilinear")
+
+ETT_dfvalid_generator=test_datagen.flow_from_dataframe(
+    dataframe=ETT_df_train[21000:],
+    directory=comp_dir+"train",
+    x_col="StudyInstanceUID",
+    y_col=label_cols,
+    batch_size=batch_size,
+    seed=42,
+    shuffle=True,
+    color_mode="rgb",
+    class_mode="raw",
+    target_size=(image_size,image_size),
+    interpolation="bilinear")
+
+    test_generator=test_datagen.flow_from_dataframe(
+    dataframe=ETT_df_test,
+    directory=comp_dir+"test",
+    x_col="StudyInstanceUID",
+    batch_size=1,
+    seed=42,
+    shuffle=False,
+    color_mode="rgb",
+    class_mode=None,
+    target_size=(image_size,image_size),
+    interpolation="bilinear")
+
+
+
 #---------# ETT CATHETER (ABNORMAL, BORDERLINE, NORMAL) #---------#
 
 inp = Input(shape = (image_size,image_size,3))
@@ -29,7 +77,7 @@ ETT_model = Model(inp,[output1,output2,output3])
 # STOCHASTIC GRADIENT DESCENT
 sgd = SGD(lr=learn_rate, momentum=.9, nesterov=False)
 
-model.compile(optimizer=sgd,
+ETT_model.compile(optimizer=sgd,
               loss = ["binary_crossentropy" for i in range(3)],
               metrics = ["accuracy"])
 
@@ -39,18 +87,18 @@ def generator_wrapper(generator):
         yield (batch_x,[batch_y[:,i] for i in range(3)])
 
 
-STEP_SIZE_TRAIN = train_generator.n//train_generator.batch_size
-STEP_SIZE_VALID = valid_generator.n//valid_generator.batch_size
+STEP_SIZE_TRAIN = ETT_dftrain_generator.n//ETT_dfvalid_generator.batch_size
+STEP_SIZE_VALID = ETT_dfvalid_generator.n//ETT_dfvalid_generator.batch_size
 STEP_SIZE_TEST = test_generator.n//test_generator.batch_size
 
-history = model.fit_generator(generator=generator_wrapper(train_generator),
+history = ETT_model.fit_generator(generator=generator_wrapper(ETT_dftrain_generator),
                     steps_per_epoch=STEP_SIZE_TRAIN,
-                    validation_data=generator_wrapper(valid_generator),
+                    validation_data=generator_wrapper(ETT_dfvalid_generator),
                     validation_steps=STEP_SIZE_VALID,
                     epochs=num_epochs,verbose=2)
 
 test_generator.reset()
-pred = model.predict_generator(test_generator,
+pred = ETT_model.predict_generator(ETT_dftrain_generator,
                              steps=STEP_SIZE_TEST,
                              verbose=1)
 
