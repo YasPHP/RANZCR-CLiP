@@ -66,12 +66,12 @@ x = Flatten()(x)
 
 # OUTPUT FUNNELLING TO CVC_model
 # “binary_crossentropy” as loss function and “sigmoid” as the final layer activation
-output8 = Dense(1, activation = 'sigmoid')(x)
-output9 = Dense(1, activation = 'sigmoid')(x)
-output10 = Dense(1, activation = 'sigmoid')(x)
+output4 = Dense(1, activation = 'sigmoid')(x)
+output5 = Dense(1, activation = 'sigmoid')(x)
+output6 = Dense(1, activation = 'sigmoid')(x)
 
 # CVC_MODEL
-CVC_model = Model(inp,[output1,output2,output3])
+CVC_model = Model(inp,[output4,output5,output6])
 
 
 # STOCHASTIC GRADIENT DESCENT
