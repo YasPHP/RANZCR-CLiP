@@ -1,7 +1,7 @@
 # RANZCR-CLiP (Catheter and Line Position Challenge)
 ## Aims to classify the presence and correct placement of catheter tubes on chest x-rays to save lives of COVID-19 patients.
 
-<img align="center" alt="xray" width="200" src="https://prod-images.static.radiopaedia.org/images/7128572/d28bd594f52d09e864dce9ccbe44d4_gallery.jpg">
+<img align="center" alt="xray" width="500" src="https://prod-images.static.radiopaedia.org/images/7128572/d28bd594f52d09e864dce9ccbe44d4_gallery.jpg">
 
 
 # Background
