@@ -87,19 +87,19 @@ def generator_wrapper(generator):
         yield (batch_x,[batch_y[:,i] for i in range(3)])
 
 
-STEP_SIZE_TRAIN = ETT_dftrain_generator.n//ETT_dfvalid_generator.batch_size
-STEP_SIZE_VALID = ETT_dfvalid_generator.n//ETT_dfvalid_generator.batch_size
-STEP_SIZE_TEST = test_generator.n//test_generator.batch_size
+STEP_SIZE_TRAIN_ETT = ETT_dftrain_generator.n//ETT_dfvalid_generator.batch_size
+STEP_SIZE_VALID_ETT = ETT_dfvalid_generator.n//ETT_dfvalid_generator.batch_size
+STEP_SIZE_TEST_ETT = test_generator.n//test_generator.batch_size
 
-history = ETT_model.fit_generator(generator=generator_wrapper(ETT_dftrain_generator),
+ETT_history = ETT_model.fit_generator(generator=generator_wrapper(ETT_dftrain_generator),
                     steps_per_epoch=STEP_SIZE_TRAIN,
                     validation_data=generator_wrapper(ETT_dfvalid_generator),
-                    validation_steps=STEP_SIZE_VALID,
+                    validation_steps=STEP_SIZE_VALID_ETT,
                     epochs=num_epochs,verbose=2)
 
 test_generator.reset()
-pred = ETT_model.predict_generator(ETT_dftrain_generator,
-                             steps=STEP_SIZE_TEST,
+ETT_pred = ETT_model.predict_generator(ETT_dftrain_generator,
+                             steps=STEP_SIZE_TEST_ETT,
                              verbose=1)
 
 
@@ -113,12 +113,11 @@ df_submission.to_csv("submission.csv", index=False)
 
 # GRAPH
 epochs = range(1,num_epochs)
-plt.plot(history.history['loss'], label='Training Set')
-plt.plot(history.history['val_loss'], label='Validation Data)')
+plt.plot(ETT_history.ETT_history['loss'], label='Training Set')
+plt.plot(ETT_history.ETT_history['val_loss'], label='Validation Data)')
 plt.title('Training and Validation loss')
 plt.ylabel('MAE')
 plt.xlabel('Num Epochs')
 plt.legend(loc="upper left")
 plt.show()
 plt.savefig("loss.png")
-
