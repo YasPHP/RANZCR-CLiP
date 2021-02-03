@@ -87,19 +87,19 @@ def generator_wrapper(generator):
         yield (batch_x,[batch_y[:,i] for i in range(3)])
 
 
-STEP_SIZE_TRAIN = CVC_dftrain_generator.n//CVC_dfvalid_generator.batch_size
-STEP_SIZE_VALID = CVC_dfvalid_generator.n//CVC_dfvalid_generator.batch_size
-STEP_SIZE_TEST = test_generator.n//test_generator.batch_size
+STEP_SIZE_TRAIN_CVC = CVC_dftrain_generator.n//CVC_dfvalid_generator.batch_size
+STEP_SIZE_VALID_CVC = CVC_dfvalid_generator.n//CVC_dfvalid_generator.batch_size
+STEP_SIZE_TEST_CVC = test_generator.n//test_generator.batch_size
 
-history = CVC_model.fit_generator(generator=generator_wrapper(CVC_dftrain_generator),
+CVC_history = CVC_model.fit_generator(generator=generator_wrapper(CVC_dftrain_generator),
                     steps_per_epoch=STEP_SIZE_TRAIN,
                     validation_data=generator_wrapper(CVC_dfvalid_generator),
-                    validation_steps=STEP_SIZE_VALID,
+                    validation_steps=STEP_SIZE_VALID_CVC,
                     epochs=num_epochs,verbose=2)
 
 test_generator.reset()
-pred = CVC_model.predict_generator(CVC_dftrain_generator,
-                             steps=STEP_SIZE_TEST,
+CVC_pred = CVC_model.predict_generator(CVC_dftrain_generator,
+                             steps=STEP_SIZE_TEST_CVC,
                              verbose=1)
 
 
@@ -113,12 +113,11 @@ df_submission.to_csv("submission.csv", index=False)
 
 # GRAPH
 epochs = range(1,num_epochs)
-plt.plot(history.history['loss'], label='Training Set')
-plt.plot(history.history['val_loss'], label='Validation Data)')
+plt.plot(CVC_history.CVC_history['loss'], label='Training Set')
+plt.plot(CVC_history.CVC_history['val_loss'], label='Validation Data)')
 plt.title('Training and Validation loss')
 plt.ylabel('MAE')
 plt.xlabel('Num Epochs')
 plt.legend(loc="upper left")
 plt.show()
 plt.savefig("loss.png")
-
