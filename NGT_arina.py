@@ -6,8 +6,8 @@ base_model.load_weights("../input/keras-pretrained-models/resnet50_weights_tf_di
 
 base_model.trainable = False
 
-NGT_df_train = df_train[["StudyInstanceUID", "NGT - Abnormal", "NGT - Borderline", "NGT - Normal"]]
-NGT_df_test = df_test[["StudyInstanceUID", "NGT - Abnormal", "NGT - Borderline", "NGT - Normal"]]
+NGT_df_train = df_train[["StudyInstanceUID", "NGT - Abnormal", "NGT - Borderline", "NGT - Incompletely Imaged", "NGT - Normal"]]
+NGT_df_test = df_test[["StudyInstanceUID", "NGT - Abnormal", "NGT - Borderline", "NGT - Incompletely Imaged", "NGT - Normal"]]
 
 NGT_dftrain_generator=datagen.flow_from_dataframe(
     dataframe=NGT_train[:21000],
@@ -45,18 +45,12 @@ inp = Input(shape = (image_size,image_size,3))
 x = base_model(inp)
 x = Flatten()(x)
 
-output1 = Dense(1, activation = 'sigmoid')(x)
-output2 = Dense(1, activation = 'sigmoid')(x)
-output3 = Dense(1, activation = 'sigmoid')(x)
 output4 = Dense(1, activation = 'sigmoid')(x)
 output5 = Dense(1, activation = 'sigmoid')(x)
 output6 = Dense(1, activation = 'sigmoid')(x)
 output7 = Dense(1, activation = 'sigmoid')(x)
-output8 = Dense(1, activation = 'sigmoid')(x)
-output9 = Dense(1, activation = 'sigmoid')(x)
-output10 = Dense(1, activation = 'sigmoid')(x)
 
-NGT_model = Model(inp,[output1,output2,output3,output4,output5,output6,output7,output8,output9,output10,output11])
+NGT_model = Model(inp,[output4,output5,output6,output7])
 
 NGT_model.compile(optimizers.rmsprop(lr = 0.0001, decay = 1e-6),
     loss = ["binary_crossentropy"]
