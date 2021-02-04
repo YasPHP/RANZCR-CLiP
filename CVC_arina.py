@@ -45,18 +45,11 @@ inp = Input(shape = (image_size,image_size,3))
 x = base_model(inp)
 x = Flatten()(x)
 
-output1 = Dense(1, activation = 'sigmoid')(x)
-output2 = Dense(1, activation = 'sigmoid')(x)
-output3 = Dense(1, activation = 'sigmoid')(x)
-output4 = Dense(1, activation = 'sigmoid')(x)
-output5 = Dense(1, activation = 'sigmoid')(x)
-output6 = Dense(1, activation = 'sigmoid')(x)
-output7 = Dense(1, activation = 'sigmoid')(x)
 output8 = Dense(1, activation = 'sigmoid')(x)
 output9 = Dense(1, activation = 'sigmoid')(x)
 output10 = Dense(1, activation = 'sigmoid')(x)
 
-CVC_model = Model(inp,[output1,output2,output3,output4,output5,output6,output7,output8,output9,output10,output11])
+CVC_model = Model(inp,[output8,output9,output10])
 
 CVC_model.compile(optimizers.rmsprop(lr = 0.0001, decay = 1e-6),
     loss = ["binary_crossentropy"]
