@@ -91,7 +91,7 @@ test_generator=test_datagen.flow_from_dataframe(
 # -----------------------------------------------------------------------------------------------------
 
 # ETT CATHETER (ABNORMAL, BORDERLINE, NORMAL)
-## DATFRAME FILTER
+# DATFRAME FILTER
 ETT_df_train = df_train[["StudyInstanceUID", "ETT - Abnormal", "ETT - Borderline", "ETT - Normal"]]
 
 # ETT TRAIN GENERATOR
@@ -322,7 +322,10 @@ steps=SG_STEP_SIZE_TEST,verbose=1)
 #FINAL OUTPUT -> putting together all four predictions      
 ##Confused on how to put all the predictions together->REMEMBER to bring up in meeting                                      
 predictions = pred_bool.astype(int)
-columns=["ETT - Abnormal", "ETT - Borderline", "ETT - Normal"]
+columns=["ETT - Abnormal", "ETT - Borderline", "ETT - Normal","NGT - Abnormal", "NGT - Borderline", 
+         "NGT - Incompletely Imaged", "NGT - Normal", "CVC - Abnormal", "CVC - Borderline", 
+         "CVC - Normal", "Swan Ganz Catheter Present"]
+
 #columns should be the same order of y_col
 results=pd.DataFrame(predictions, columns=columns)
 results["StudyInstanceUID"]=test_generator.StudyInstanceUID
