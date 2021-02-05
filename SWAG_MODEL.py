@@ -12,8 +12,8 @@ base_model.trainable = False
 #---------# SWAG DF GENERATORS (TRAIN, VALID, TEST [UNIVERSAL/NON-UNIQUE]) #---------#
 
 ## DATFRAME FILTER
-SWAG_df_train = df_train[["StudyInstanceUID", "SSwan Ganz Catheter Present"]]
-SWAG_df_test = df_test[["StudyInstanceUID", "SSwan Ganz Catheter Present"]]
+SWAG_df_train = df_train[["StudyInstanceUID", "Swan Ganz Catheter Present"]]
+SWAG_df_test = df_test[["StudyInstanceUID", "Swan Ganz Catheter Present"]]
 # print(SWAG_df.head())
 
 # SWAG GENERATORS 
