@@ -80,138 +80,7 @@ def generator_wrapper(generator, start, end):
     for batch_x,batch_y in generator:
         yield (batch_x,[batch_y[:,i] for i in range(start, end)])
 #-----------------------------------------------------------------------------------------------------
-#---------# ETT DF GENERATORS (TRAIN, VALID, TEST [UNIVERSAL/NON-UNIQUE]) #---------#
 
-## DATFRAME FILTER
-ETT_df_train = df_train[["StudyInstanceUID", "ETT - Abnormal", "ETT - Borderline", "ETT - Normal"]]
-
-# ETT GENERATORS 
-ETT_dftrain_generator=datagen.flow_from_dataframe(
-    dataframe=ETT_df_train[:21000],
-    directory=comp_dir+"train",
-    x_col="StudyInstanceUID",
-    y_col=label_cols,
-    batch_size=batch_size,
-    seed=42,
-    shuffle=True,
-    color_mode="rgb",
-    class_mode="raw",
-    target_size=(image_size,image_size),
-    interpolation="bilinear")
-
-ETT_dfvalid_generator=test_datagen.flow_from_dataframe(
-    dataframe=ETT_df_train[21000:],
-    directory=comp_dir+"train",
-    x_col="StudyInstanceUID",
-    y_col=label_cols,
-    batch_size=batch_size,
-    seed=42,
-    shuffle=True,
-    color_mode="rgb",
-    class_mode="raw",
-    target_size=(image_size,image_size),
-    interpolation="bilinear")
-#---------# ETT CATHETER (ABNORMAL, BORDERLINE, NORMAL) #---------#
-
-# OUTPUT FUNNELLING TO ETT_model
-# “binary_crossentropy” as loss function and “sigmoid” as the final layer activation
-output1 = Dense(1, activation = 'sigmoid')(x)
-output2 = Dense(1, activation = 'sigmoid')(x)
-output3 = Dense(1, activation = 'sigmoid')(x)
-
-# ETT_MODEL
-ETT_model = Model(inp,[output1,output2,output3])
-
-
-# STOCHASTIC GRADIENT DESCENT
-sgd = SGD(lr=learn_rate, momentum=.9, nesterov=False)
-
-ETT_model.compile(optimizer=sgd,
-              loss = ["binary_crossentropy" for i in range(3)],
-              metrics = ["accuracy"])
-
-
-STEP_SIZE_TRAIN_ETT = ETT_dftrain_generator.n//ETT_dfvalid_generator.batch_size
-STEP_SIZE_VALID_ETT = ETT_dfvalid_generator.n//ETT_dfvalid_generator.batch_size
-STEP_SIZE_TEST_ETT = test_generator.n//test_generator.batch_size
-
-ETT_history = ETT_model.fit_generator(generator=generator_wrapper(ETT_dftrain_generator, 0, 3),
-                    steps_per_epoch=STEP_SIZE_TRAIN,
-                    validation_data=generator_wrapper(ETT_dfvalid_generator, 0, 3),
-                    validation_steps=STEP_SIZE_VALID_ETT,
-                    epochs=num_epochs,verbose=2)
-
-test_generator.reset()
-ETT_pred = ETT_model.predict_generator(ETT_dftrain_generator,
-                             steps=STEP_SIZE_TEST_ETT,
-                             verbose=1)
-#-----------------------------------------------------------------------------------------------------
-#---------# NGT DF GENERATORS (TRAIN, VALID, TEST [UNIVERSAL/NON-UNIQUE]) #---------#
-
-## DATFRAME FILTER
-NGT_df_train = df_train[["StudyInstanceUID", "NGT - Abnormal", "NGT - Borderline", "NGT - Incompletely Imaged", "NGT - Normal"]]
-
-# NGT GENERATORS 
-NGT_dftrain_generator=datagen.flow_from_dataframe(
-    dataframe=NGT_df_train[:21000],
-    directory=comp_dir+"train",
-    x_col="StudyInstanceUID",
-    y_col=label_cols,
-    batch_size=batch_size,
-    seed=42,
-    shuffle=True,
-    color_mode="rgb",
-    class_mode="raw",
-    target_size=(image_size,image_size),
-    interpolation="bilinear")
-
-NGT_dfvalid_generator=test_datagen.flow_from_dataframe(
-    dataframe=NGT_df_train[21000:],
-    directory=comp_dir+"train",
-    x_col="StudyInstanceUID",
-    y_col=label_cols,
-    batch_size=batch_size,
-    seed=42,
-    shuffle=True,
-    color_mode="rgb",
-    class_mode="raw",
-    target_size=(image_size,image_size),
-    interpolation="bilinear")
-
-#---------# NGT CATHETER (ABNORMAL, BORDERLINE, NORMAL) #---------#
-# OUTPUT FUNNELLING TO NGT_model
-# “binary_crossentropy” as loss function and “sigmoid” as the final layer activation
-output7 = Dense(1, activation = 'sigmoid')(x)
-output8 = Dense(1, activation = 'sigmoid')(x)
-output9 = Dense(1, activation = 'sigmoid')(x)
-output10 = Dense(1, activation = 'sigmoid')(x)
-
-# NGT_MODEL
-NGT_model = Model(inp,[output7,output8,output9,output10])
-
-# STOCHASTIC GRADIENT DESCENT
-sgd = SGD(lr=learn_rate, momentum=.9, nesterov=False)
-
-NGT_model.compile(optimizer=sgd,
-              loss = ["binary_crossentropy" for i in range(4)],
-              metrics = ["accuracy"])
-
-
-STEP_SIZE_TRAIN_NGT = NGT_dftrain_generator.n//NGT_dfvalid_generator.batch_size
-STEP_SIZE_VALID_NGT = NGT_dfvalid_generator.n//NGT_dfvalid_generator.batch_size
-STEP_SIZE_TEST_NGT = test_generator.n//test_generator.batch_size
-
-NGT_history = NGT_model.fit_generator(generator=generator_wrapper(NGT_dftrain_generator, 3, 7),
-                    steps_per_epoch=STEP_SIZE_TRAIN,
-                    validation_data=generator_wrapper(NGT_dfvalid_generator, 3, 7),
-                    validation_steps=STEP_SIZE_VALID_NGT,
-                    epochs=num_epochs,verbose=2)
-
-test_generator.reset()
-NGT_pred = NGT_model.predict_generator(NGT_dftrain_generator,
-                             steps=STEP_SIZE_TEST_NGT,
-                             verbose=1)
-#-----------------------------------------------------------------------------------------------------
 #---------# CVC DF GENERATORS (TRAIN, VALID, TEST [UNIVERSAL/NON-UNIQUE]) #---------#
 
 ## DATFRAME FILTER
@@ -273,7 +142,7 @@ STEP_SIZE_VALID_CVC = CVC_dfvalid_generator.n//CVC_dfvalid_generator.batch_size
 STEP_SIZE_TEST_CVC = test_generator.n//test_generator.batch_size
 
 CVC_history = CVC_model.fit_generator(generator=generator_wrapper(CVC_dftrain_generator, 7, 10),
-                    steps_per_epoch=STEP_SIZE_TRAIN,
+                    steps_per_epoch=STEP_SIZE_TRAIN_CVC,
                     validation_data=generator_wrapper(CVC_dfvalid_generator, 7, 10),
                     validation_steps=STEP_SIZE_VALID_CVC,
                     epochs=num_epochs,verbose=2)
@@ -281,6 +150,140 @@ CVC_history = CVC_model.fit_generator(generator=generator_wrapper(CVC_dftrain_ge
 test_generator.reset()
 CVC_pred = CVC_model.predict_generator(CVC_dftrain_generator,
                              steps=STEP_SIZE_TEST_CVC,
+                             verbose=1)
+#-----------------------------------------------------------------------------------------------------
+
+#---------# ETT DF GENERATORS (TRAIN, VALID, TEST [UNIVERSAL/NON-UNIQUE]) #---------#
+
+## DATFRAME FILTER
+ETT_df_train = df_train[["StudyInstanceUID", "ETT - Abnormal", "ETT - Borderline", "ETT - Normal"]]
+
+# ETT GENERATORS 
+ETT_dftrain_generator=datagen.flow_from_dataframe(
+    dataframe=ETT_df_train[:21000],
+    directory=comp_dir+"train",
+    x_col="StudyInstanceUID",
+    y_col=label_cols,
+    batch_size=batch_size,
+    seed=42,
+    shuffle=True,
+    color_mode="rgb",
+    class_mode="raw",
+    target_size=(image_size,image_size),
+    interpolation="bilinear")
+
+ETT_dfvalid_generator=test_datagen.flow_from_dataframe(
+    dataframe=ETT_df_train[21000:],
+    directory=comp_dir+"train",
+    x_col="StudyInstanceUID",
+    y_col=label_cols,
+    batch_size=batch_size,
+    seed=42,
+    shuffle=True,
+    color_mode="rgb",
+    class_mode="raw",
+    target_size=(image_size,image_size),
+    interpolation="bilinear")
+#---------# ETT CATHETER (ABNORMAL, BORDERLINE, NORMAL) #---------#
+
+# OUTPUT FUNNELLING TO ETT_model
+# “binary_crossentropy” as loss function and “sigmoid” as the final layer activation
+output1 = Dense(1, activation = 'sigmoid')(x)
+output2 = Dense(1, activation = 'sigmoid')(x)
+output3 = Dense(1, activation = 'sigmoid')(x)
+
+# ETT_MODEL
+ETT_model = Model(inp,[output1,output2,output3])
+
+
+# STOCHASTIC GRADIENT DESCENT
+sgd = SGD(lr=learn_rate, momentum=.9, nesterov=False)
+
+ETT_model.compile(optimizer=sgd,
+              loss = ["binary_crossentropy" for i in range(3)],
+              metrics = ["accuracy"])
+
+
+STEP_SIZE_TRAIN_ETT = ETT_dftrain_generator.n//ETT_dfvalid_generator.batch_size
+STEP_SIZE_VALID_ETT = ETT_dfvalid_generator.n//ETT_dfvalid_generator.batch_size
+STEP_SIZE_TEST_ETT = test_generator.n//test_generator.batch_size
+
+ETT_history = ETT_model.fit_generator(generator=generator_wrapper(ETT_dftrain_generator, 0, 3),
+                    steps_per_epoch=STEP_SIZE_TRAIN_ETT,
+                    validation_data=generator_wrapper(ETT_dfvalid_generator, 0, 3),
+                    validation_steps=STEP_SIZE_VALID_ETT,
+                    epochs=num_epochs,verbose=2)
+
+test_generator.reset()
+ETT_pred = ETT_model.predict_generator(ETT_dftrain_generator,
+                             steps=STEP_SIZE_TEST_ETT,
+                             verbose=1)
+#-----------------------------------------------------------------------------------------------------
+
+#---------# NGT DF GENERATORS (TRAIN, VALID, TEST [UNIVERSAL/NON-UNIQUE]) #---------#
+
+## DATFRAME FILTER
+NGT_df_train = df_train[["StudyInstanceUID", "NGT - Abnormal", "NGT - Borderline", "NGT - Incompletely Imaged", "NGT - Normal"]]
+
+# NGT GENERATORS 
+NGT_dftrain_generator=datagen.flow_from_dataframe(
+    dataframe=NGT_df_train[:21000],
+    directory=comp_dir+"train",
+    x_col="StudyInstanceUID",
+    y_col=label_cols,
+    batch_size=batch_size,
+    seed=42,
+    shuffle=True,
+    color_mode="rgb",
+    class_mode="raw",
+    target_size=(image_size,image_size),
+    interpolation="bilinear")
+
+NGT_dfvalid_generator=test_datagen.flow_from_dataframe(
+    dataframe=NGT_df_train[21000:],
+    directory=comp_dir+"train",
+    x_col="StudyInstanceUID",
+    y_col=label_cols,
+    batch_size=batch_size,
+    seed=42,
+    shuffle=True,
+    color_mode="rgb",
+    class_mode="raw",
+    target_size=(image_size,image_size),
+    interpolation="bilinear")
+
+#---------# NGT CATHETER (ABNORMAL, BORDERLINE, NORMAL) #---------#
+# OUTPUT FUNNELLING TO NGT_model
+# “binary_crossentropy” as loss function and “sigmoid” as the final layer activation
+output7 = Dense(1, activation = 'sigmoid')(x)
+output8 = Dense(1, activation = 'sigmoid')(x)
+output9 = Dense(1, activation = 'sigmoid')(x)
+output10 = Dense(1, activation = 'sigmoid')(x)
+
+# NGT_MODEL
+NGT_model = Model(inp,[output7,output8,output9,output10])
+
+# STOCHASTIC GRADIENT DESCENT
+sgd = SGD(lr=learn_rate, momentum=.9, nesterov=False)
+
+NGT_model.compile(optimizer=sgd,
+              loss = ["binary_crossentropy" for i in range(4)],
+              metrics = ["accuracy"])
+
+
+STEP_SIZE_TRAIN_NGT = NGT_dftrain_generator.n//NGT_dfvalid_generator.batch_size
+STEP_SIZE_VALID_NGT = NGT_dfvalid_generator.n//NGT_dfvalid_generator.batch_size
+STEP_SIZE_TEST_NGT = test_generator.n//test_generator.batch_size
+
+NGT_history = NGT_model.fit_generator(generator=generator_wrapper(NGT_dftrain_generator, 3, 7),
+                    steps_per_epoch=STEP_SIZE_TRAIN_NGT,
+                    validation_data=generator_wrapper(NGT_dfvalid_generator, 3, 7),
+                    validation_steps=STEP_SIZE_VALID_NGT,
+                    epochs=num_epochs,verbose=2)
+
+test_generator.reset()
+NGT_pred = NGT_model.predict_generator(NGT_dftrain_generator,
+                             steps=STEP_SIZE_TEST_NGT,
                              verbose=1)
 #-----------------------------------------------------------------------------------------------------
 
@@ -329,7 +332,7 @@ SWAG_model = Model(inp,[output11])
 sgd = SGD(lr=learn_rate, momentum=.9, nesterov=False)
 
 SWAG_model.compile(optimizer=sgd,
-              loss = ["binary_crossentropy" for i in range(1)],
+              loss = "binary_crossentropy",
               metrics = ["accuracy"])
               
 
@@ -338,7 +341,7 @@ STEP_SIZE_VALID_SWAG = SWAG_dfvalid_generator.n//SWAG_dfvalid_generator.batch_si
 STEP_SIZE_TEST_SWAG = test_generator.n//test_generator.batch_size
 
 SWAG_history = SWAG_model.fit_generator(generator=generator_wrapper(SWAG_dftrain_generator, 10, 11),
-                    steps_per_epoch=STEP_SIZE_TRAIN,
+                    steps_per_epoch=STEP_SIZE_TRAIN_SWAG,
                     validation_data=generator_wrapper(SWAG_dfvalid_generator, 10, 11),
                     validation_steps=STEP_SIZE_VALID_SWAG,
                     epochs=num_epochs,verbose=2)
@@ -358,16 +361,14 @@ CVC_COLUMNS = ["CVC - Abnormal", "CVC - Borderline",
          "CVC - Normal"]
 SWAG_COLUMN = ["Swan Ganz Catheter Present"]
 
-
-# assuming we don't need squeeze and transpose (!!!!!!!!!!!!!!!!!!!!!)
 # Catheter Dataframes
-ETT_df_submission = pd.DataFrame(ETT_pred, columns = ETT_COLUMNS)
-NGT_df_submission = pd.DataFrame(NGT_pred, columns = NGT_COLUMNS)
-CVC_df_submission = pd.DataFrame(CVC_pred, columns = CVC_COLUMNS)
-SWAG_df_submission = pd.DataFrame(SWAG_pred, columns = SWAG_COLUMN)
+ETT_df_submission = pd.DataFrame(np.squeeze(ETT_pred).transpose(), columns = ETT_COLUMNS)
+NGT_df_submission = pd.DataFrame(np.squeeze(NGT_pred).transpose(), columns = NGT_COLUMNS)
+CVC_df_submission = pd.DataFrame(np.squeeze(CVC_pred).transpose(), columns = CVC_COLUMNS)
+SWAG_df_submission = pd.DataFrame(np.squeeze(SWAG_pred).transpose(), columns = SWAG_COLUMN)
 
 # StudyInstanceUID DataFrame
-SUID_df_submission = pd.DataFrame(test_files, "StudyInstanceUID")
+SUID_df_submission = pd.DataFrame({"StudyInstanceUID": test_files})
 
 # concatenated dataframes
 catheter_df = [SUID_df_submission, ETT_df_submission, NGT_df_submission, CVC_df_submission, SWAG_df_submission]
