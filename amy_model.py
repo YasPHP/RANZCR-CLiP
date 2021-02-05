@@ -52,6 +52,7 @@ learn_rate = 1e-03
 df_train.StudyInstanceUID += ".jpg"
 
 # -----------------------------------------------------------------------------------------------------
+#PRETRAINED RESNET CNN
 base_model = ResNet50(include_top=False, 
                                     weights="imagenet", 
                                     input_shape=(image_size, image_size, 3))
@@ -119,6 +120,8 @@ x = Flatten()(x)
 output1 = Dense(1, activation = 'sigmoid')(x)
 output2 = Dense(1, activation = 'sigmoid')(x)
 output3 = Dense(1, activation = 'sigmoid')(x)
+
+
 ett_model = Model(inp,[output1,output2,output3])
 ett_model.compile(optimizers.rmsprop(lr = 0.0001, decay = 1e-6),
 loss = ["binary_crossentropy","binary_crossentropy","binary_crossentropy"],metrics = ["accuracy"])             
