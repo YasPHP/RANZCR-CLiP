@@ -65,8 +65,8 @@ test_datagen=ImageDataGenerator(rescale=1./255.)
 
 #----------------TEST GENERATOR------------------------------------------------------------------------
 test_generator=test_datagen.flow_from_dataframe(
-    dataframe=df_test,
-    directory=comp_dir+"test",          # Change this
+    dataframe=df_train[21000:],          # changed from df_test
+    directory=comp_dir+"test",          # change this
     x_col="StudyInstanceUID",
     batch_size=1,
     seed=42,
@@ -144,9 +144,9 @@ STEP_SIZE_TRAIN_CVC = CVC_dftrain_generator.n//CVC_dfvalid_generator.batch_size
 STEP_SIZE_VALID_CVC = CVC_dfvalid_generator.n//CVC_dfvalid_generator.batch_size
 STEP_SIZE_TEST_CVC = test_generator.n//test_generator.batch_size
 
-CVC_history = CVC_model.fit_generator(generator=generator_wrapper(CVC_dftrain_generator, 7, 10),
+CVC_history = CVC_model.fit_generator(generator=generator_wrapper(CVC_dftrain_generator, 0, 3),
                     steps_per_epoch=STEP_SIZE_TRAIN_CVC,
-                    validation_data=generator_wrapper(CVC_dfvalid_generator, 7, 10),
+                    validation_data=generator_wrapper(CVC_dfvalid_generator, 0, 3),
                     validation_steps=STEP_SIZE_VALID_CVC,
                     epochs=num_epochs,verbose=2)
 
@@ -222,15 +222,6 @@ ETT_pred = ETT_model.predict_generator(ETT_dftrain_generator,
                              steps=STEP_SIZE_TEST_ETT,
                              verbose=1)
 
-
-# Get AUC Score    # TEST THIS
-# y_pred = np.transpose(np.squeeze(pred))
-# y_true = df_train.loc[24000:, label_cols].to_numpy()
-# aucs = roc_auc_score(y_true, y_pred, average=None)
-
-# print("AUC Scores: ", aucs)
-# print("Average AUC: ", np.mean(aucs))
-
 #-----------------------------------------------------------------------------------------------------
 
 #---------# NGT DF GENERATORS (TRAIN, VALID, TEST [UNIVERSAL/NON-UNIQUE]) #---------#
@@ -288,9 +279,9 @@ STEP_SIZE_TRAIN_NGT = NGT_dftrain_generator.n//NGT_dfvalid_generator.batch_size
 STEP_SIZE_VALID_NGT = NGT_dfvalid_generator.n//NGT_dfvalid_generator.batch_size
 STEP_SIZE_TEST_NGT = test_generator.n//test_generator.batch_size
 
-NGT_history = NGT_model.fit_generator(generator=generator_wrapper(NGT_dftrain_generator, 3, 7),
+NGT_history = NGT_model.fit_generator(generator=generator_wrapper(NGT_dftrain_generator, 0, 4),
                     steps_per_epoch=STEP_SIZE_TRAIN_NGT,
-                    validation_data=generator_wrapper(NGT_dfvalid_generator, 3, 7),
+                    validation_data=generator_wrapper(NGT_dfvalid_generator, 0, 4),
                     validation_steps=STEP_SIZE_VALID_NGT,
                     epochs=num_epochs,verbose=2)
 
@@ -353,9 +344,9 @@ STEP_SIZE_TRAIN_SWAG = SWAG_dftrain_generator.n//SWAG_dfvalid_generator.batch_si
 STEP_SIZE_VALID_SWAG = SWAG_dfvalid_generator.n//SWAG_dfvalid_generator.batch_size
 STEP_SIZE_TEST_SWAG = test_generator.n//test_generator.batch_size
 
-SWAG_history = SWAG_model.fit_generator(generator=generator_wrapper(SWAG_dftrain_generator, 10, 11),
+SWAG_history = SWAG_model.fit_generator(generator=generator_wrapper(SWAG_dftrain_generator, 0, 1),
                     steps_per_epoch=STEP_SIZE_TRAIN_SWAG,
-                    validation_data=generator_wrapper(SWAG_dfvalid_generator, 10, 11),
+                    validation_data=generator_wrapper(SWAG_dfvalid_generator, 0, 1),
                     validation_steps=STEP_SIZE_VALID_SWAG,
                     epochs=num_epochs,verbose=2)
 
@@ -365,6 +356,21 @@ SWAG_pred = SWAG_model.predict_generator(SWAG_dftrain_generator,
                              verbose=1)
 
 #==========================FINAL SUBMISSION============================#
+
+# Get AUC Score    # TEST THIS
+
+#ETT_model.save     save weights- debug to load file with weights (google)
+# y_pred = np.transpose(np.squeeze(pred))
+
+# DOUBLE CHECK
+y_pred = np.transpose(np.squeeze(np.concatenate([CVC_pred, ETT_pred, NGT_pred, SWAG_pred])))
+
+y_true = df_train.loc[24000:, label_cols].to_numpy()
+aucs = roc_auc_score(y_true, y_pred, average=None)  # predictions per row
+
+print("AUC Scores: ", aucs)
+print("Average AUC: ", np.mean(aucs))
+
 
 # CATHETER COLUMNS
 ETT_COLUMNS = ["ETT - Abnormal", "ETT - Borderline", "ETT - Normal"]
@@ -400,6 +406,19 @@ df_submission.to_csv("submission.csv", index=False)
 # epochs = range(1,num_epochs)
 # plt.plot(SWAG_history.SWAG_history['loss'], label='Training Set')
 # plt.plot(SWAG_history.SWAG_history['val_loss'], label='Validation Data)')
+# plt.title('Training and Validation loss')
+# plt.ylabel('MAE')
+# plt.xlabel('Num Epochs')
+# plt.legend(loc="upper left")
+# plt.show()
+# plt.savefig("loss.png")
+
+
+
+
+# epochs = range(1,num_epochs)
+# plt.plot(history.history['loss'], label='Training Set')
+# plt.plot(history.history['val_loss'], label='Validation Data)')
 # plt.title('Training and Validation loss')
 # plt.ylabel('MAE')
 # plt.xlabel('Num Epochs')
