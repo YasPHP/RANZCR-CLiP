@@ -401,27 +401,51 @@ df_submission = pd.concat(catheter_df)
 df_submission.to_csv("submission.csv", index=False)
 
 
+#==========================CATHETER RESULTS GRAPHS============================#
 
-# # GRAPH (STILL NEED TO FIX)
-# epochs = range(1,num_epochs)
-# plt.plot(SWAG_history.SWAG_history['loss'], label='Training Set')
-# plt.plot(SWAG_history.SWAG_history['val_loss'], label='Validation Data)')
-# plt.title('Training and Validation loss')
-# plt.ylabel('MAE')
-# plt.xlabel('Num Epochs')
-# plt.legend(loc="upper left")
-# plt.show()
-# plt.savefig("loss.png")
+# CVC GRAPH
+epochs = range(1,num_epochs)
+plt.plot(CVC_history.CVC_history['loss'], label='Training Set')
+plt.plot(CVC_history.CVC_history['val_loss'], label='Validation Data)')
+plt.title('Training and Validation loss')
+plt.ylabel('MAE')
+plt.xlabel('Num Epochs')
+plt.legend(loc="upper left")
+plt.show()
+plt.savefig("CVC_loss.png")
 
 
+# ETT GRAPH
+epochs = range(1,num_epochs)
+plt.plot(ETT_history.ETT_history['loss'], label='Training Set')
+plt.plot(ETT_history.ETT_history['val_loss'], label='Validation Data)')
+plt.title('Training and Validation loss')
+plt.ylabel('MAE')
+plt.xlabel('Num Epochs')
+plt.legend(loc="upper left")
+plt.show()
+plt.savefig("ETT_loss.png")
 
 
-# epochs = range(1,num_epochs)
-# plt.plot(history.history['loss'], label='Training Set')
-# plt.plot(history.history['val_loss'], label='Validation Data)')
-# plt.title('Training and Validation loss')
-# plt.ylabel('MAE')
-# plt.xlabel('Num Epochs')
-# plt.legend(loc="upper left")
-# plt.show()
-# plt.savefig("loss.png")
+# NGT GRAPH
+epochs = range(1,num_epochs)
+plt.plot(NGT_history.NGT_history['loss'], label='Training Set')
+plt.plot(NGT_history.NGT_history['val_loss'], label='Validation Data)')
+plt.title('Training and Validation loss')
+plt.ylabel('MAE')
+plt.xlabel('Num Epochs')
+plt.legend(loc="upper left")
+plt.show()
+plt.savefig("NGT_loss.png")
+
+
+# SWAG GRAPH
+epochs = range(1,num_epochs)
+plt.plot(SWAG_history.SWAG_history['loss'], label='Training Set')
+plt.plot(SWAG_history.SWAG_history['val_loss'], label='Validation Data)')
+plt.title('Training and Validation loss')
+plt.ylabel('MAE')
+plt.xlabel('Num Epochs')
+plt.legend(loc="upper left")
+plt.show()
+plt.savefig("SWAG_loss.png")
