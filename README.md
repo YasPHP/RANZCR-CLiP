@@ -28,18 +28,18 @@ The dataset has been labelled with a set of definitions to ensure consistency wi
 # Successful Application
 If successful, your efforts may help clinicians save lives. Earlier detection of malpositioned catheters and lines is even more important as COVID-19 cases continue to surge. Many hospitals are at capacity and more patients are in need of these tubes and lines. Quick feedback on catheter and line placement could help clinicians better treat these patients. Beyond COVID-19, detection of line and tube position will ALWAYS be a requirement in many ill hospital patients.
 
+# Members (Team Brain)
+
 ## Team Data
 - Stanley Hua
 - Whitney Chiu
 
-# Members (Team Brain)
 ## Team Model Architecture
 - Yasmeen Hmaidan
 - Maliha Lodi
 - Arina Mnatsakanyan
 
 # Relevant Communities
-
 <img align="left" img src="https://www.internationaldayofradiology.com/app/uploads/2017/08/sponsor-ranzcr.png" width="300">
 <img img align="center left" src="https://static.wixstatic.com/media/8f6d2f_a3d012b6a8254c5494ee81979ed84e8b~mv2.png/v1/fill/w_202,h_80,al_c,q_85,usm_0.66_1.00_0.01/uoftaishort_i.webpraw=true" width="300">
 <img img align="left" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Kaggle_logo.png" width="300">
