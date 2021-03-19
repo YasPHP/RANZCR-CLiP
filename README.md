@@ -29,7 +29,7 @@ The dataset has been labelled with a set of definitions to ensure consistency wi
 If successful, your efforts may help clinicians save lives. Earlier detection of malpositioned catheters and lines is even more important as COVID-19 cases continue to surge. Many hospitals are at capacity and more patients are in need of these tubes and lines. Quick feedback on catheter and line placement could help clinicians better treat these patients. Beyond COVID-19, detection of line and tube position will ALWAYS be a requirement in many ill hospital patients.
 
 
-# Members (Team Proj Cog)
+# Members (Team Brain)
 ## Team Model Architecture
 - Yasmeen Hmaidan
 - Maliha Lodi
