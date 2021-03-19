@@ -18,6 +18,10 @@ The Royal Australian and New Zealand College of Radiologists (RANZCR) is a not-f
 # Our Approach
 In this competition, we detected the presence and position of catheters and lines on chest x-rays and used machine learning to train and test the model on 40,000 images to categorize a tube that is poorly placed.
 
+# AUC Score
+- Private Score: 0.87059
+- Public Score: 0.86499
+
 # The Dataset
 The dataset has been labelled with a set of definitions to ensure consistency with labelling. The normal category includes lines that were appropriately positioned and did not require repositioning. The borderline category includes lines that would ideally require some repositioning but would in most cases still function adequately in their current position. The abnormal category included lines that required immediate repositioning.
 
